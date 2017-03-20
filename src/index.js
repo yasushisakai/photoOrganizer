@@ -6,6 +6,7 @@ import { movieFileExtensions, imageFileExtensions} from './constants'
 import { getFileListRecursive } from './helpers'
 
 const targetPath = process.argv[2] || '../testDir'
+const title = process.argv[3] || ''
 const fullPath = path.resolve(__dirname,targetPath)
 
 const fileList = getFileListRecursive(fullPath)
@@ -19,18 +20,19 @@ fileList.map((filePath)=>{
 
   if(movieFileExtensions.includes(extension)){
     // THIS IS A MOVIE
-    const newPath = `${fullPath}/video/${strftime('%Y/%y%m%d',creationTime)}/${fileName}`
+    const newPath = `${fullPath}/video/${strftime('%Y/%y%m%d',creationTime)}_${title}/${fileName}`
     fs.copySync(filePath,newPath,{preserveTimestamps:true}) 
 
   }else if(imageFileExtensions.includes(extension)){
     // THIS IS A IMAGE
-    const newPath = `${fullPath}/image/${strftime('%Y/%y%m%d',creationTime)}/${fileName}`
+    const newPath = `${fullPath}/image/${strftime('%Y/%y%m%d',creationTime)}_${title}/${fileName}`
+    // console.log(`image:${extension} @ ${filePath}`)
     fs.copySync(filePath,newPath,{preserveTimestamps:true}) 
 
   }else{
     console.log(`ignored:${extension} @ ${filePath}`)
     console.log(' ')
-    
+
   }
 })
 
